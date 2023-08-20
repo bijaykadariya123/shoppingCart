@@ -66,6 +66,12 @@ app.get("/:id", async (req, res)=>{
     const oneListItem = await Shoppingcart.findById(idItem)
     res.json(oneListItem)
 })
+// Update Route: put: "/: id"
+app.put("/:id", async (req, res)=>{
+    idItem = req.params.id
+    const oneListItem = await Shoppingcart.findByIdAndUpdate(idItem, req.body, {new:true})
+    res.json(oneListItem)
+})
 
 
 
