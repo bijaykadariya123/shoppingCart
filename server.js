@@ -50,7 +50,7 @@ app.get("/", async(req,res)=>{
         res.status(400).json(error)
     }
 })
-// Create Route: POST:
+// Create Route: POST: "/"
 app.post("/", async(req, res)=>{
     try{
         const oneList = await Shoppingcart.create(req.body)
@@ -60,6 +60,13 @@ app.post("/", async(req, res)=>{
         res.status(400).json()
     }
 })
+// SHOW Route: get: "/:id"
+app.get("/:id", async (req, res)=>{
+    const idItem = req.params.id
+    const oneListItem = await Shoppingcart.findById(idItem)
+    res.json(oneListItem)
+})
+
 
 
 ///////////////////////////////////////////////////////////////////////////SERVER PORT LISTENER
