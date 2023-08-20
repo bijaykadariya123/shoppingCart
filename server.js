@@ -36,8 +36,31 @@ app.use(morgan("dev"))
 // express functionality to recognize incoming request object as JSON object:
 app.use(express.json())
 ///////////////////////////////////////////////////////////////////////////ROUTES
-app.get("/", (req, res)=>{
-    res.json({Hellow: "world"});
+// app.get("/", (req, res)=>{
+//     res.json({Hellow: "world"});
+// })
+
+// INDEX: get: "/"
+app.get("/", async(req,res)=>{
+    try{
+        const allList = await Shoppingcart.find({})
+        res.json(allList)
+    }
+    catch(error){
+        res.status(400).json(error)
+    }
 })
+// Create Route: POST:
+app.post("/", async(req, res)=>{
+    try{
+        const oneList = await Shoppingcart.create(req.body)
+        res.json(oneList)
+    }
+    catch(error){
+        res.status(400).json()
+    }
+})
+
+
 ///////////////////////////////////////////////////////////////////////////SERVER PORT LISTENER
 app.listen(PORT)
