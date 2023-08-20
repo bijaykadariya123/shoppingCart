@@ -10,6 +10,8 @@ const mongoose = require("mongoose")
 const cors = require("cors")
 // Import morgan for moggan logs
 const morgan = require("morgan")
+const Shoppingcart = require("./models/models.js")
+const shoppingListRoutes = require("./controllers/Routes.js")
 
 
 ///////////////////////////////////////////////////////////////////////////DATABASE CONNECTION
@@ -19,25 +21,17 @@ mongoose.connect(URL)
                         .on("close", ()=>{console.log("NOT Connected to mongoose")})
                         .on("error", (error)=>{console.log(error)})
 
-///////////////////////////////////////////////////////////////////////////MODELS
-const shoppingListSchema = new mongoose.Schema({
-    product:String,
-    image:String,
-    originCountry:String,
-    price:Number,
-})
-const Shoppingcart = mongoose.model("Shoppinglist", shoppingListSchema)
-
 ///////////////////////////////////////////////////////////////////////////MIDDLEWARE
 // CORS: CROSS-ORIGIN RESOURCE SHARING:
 app.use(cors())
-// USE morgina:
+// USE morgan:
 app.use(morgan("dev"))
 // express functionality to recognize incoming request object as JSON object:
 app.use(express.json())
-///////////////////////////////////////////////////////////////////////////ROUTES
-app.get("/", (req, res)=>{
-    res.json({Hellow: "world"});
-})
+
+// ALl the Routes:
+app.use("/", shoppingListRoutes)
+
+
 ///////////////////////////////////////////////////////////////////////////SERVER PORT LISTENER
 app.listen(PORT)
