@@ -62,15 +62,38 @@ app.post("/", async(req, res)=>{
 })
 // SHOW Route: get: "/:id"
 app.get("/:id", async (req, res)=>{
+    try{
     const idItem = req.params.id
     const oneListItem = await Shoppingcart.findById(idItem)
     res.json(oneListItem)
+    }
+    catch(error){
+        res.status(400).json(error)
+    }
 })
 // Update Route: put: "/: id"
 app.put("/:id", async (req, res)=>{
-    idItem = req.params.id
-    const oneListItem = await Shoppingcart.findByIdAndUpdate(idItem, req.body, {new:true})
-    res.json(oneListItem)
+    try{idItem = req.params.id
+        const oneListItem = await Shoppingcart.findByIdAndUpdate(idItem, req.body, {new:true})
+        res.json(oneListItem)
+    }
+    catch(error){
+        res.status(400).json(error)
+    }
+})
+    
+
+// Destroy Route: delete: "/:id"
+app.delete("/:id", async (req, res)=>{
+    try{
+        const idItem = req.params.id
+        const oneListItemtoDelete = await Shoppingcart.findByIdAndDelete(idItem)
+        res.json(oneListItemtoDelete)
+    }
+    catch(error){
+        res.status(400).json()
+    }
+
 })
 
 
