@@ -10,6 +10,8 @@ const mongoose = require("mongoose")
 const cors = require("cors")
 // Import morgan for moggan logs
 const morgan = require("morgan")
+const Shoppingcart = require("./models/models.js")
+const shoppingListRoutes = require("./controllers/Routes.js")
 
 
 ///////////////////////////////////////////////////////////////////////////DATABASE CONNECTION
@@ -19,83 +21,16 @@ mongoose.connect(URL)
                         .on("close", ()=>{console.log("NOT Connected to mongoose")})
                         .on("error", (error)=>{console.log(error)})
 
-///////////////////////////////////////////////////////////////////////////MODELS
-const shoppingListSchema = new mongoose.Schema({
-    product:String,
-    image:String,
-    originCountry:String,
-    price:Number,
-})
-const Shoppingcart = mongoose.model("Shoppinglist", shoppingListSchema)
-
 ///////////////////////////////////////////////////////////////////////////MIDDLEWARE
 // CORS: CROSS-ORIGIN RESOURCE SHARING:
 app.use(cors())
-// USE morgina:
+// USE morgan:
 app.use(morgan("dev"))
 // express functionality to recognize incoming request object as JSON object:
 app.use(express.json())
-///////////////////////////////////////////////////////////////////////////ROUTES
-// app.get("/", (req, res)=>{
-//     res.json({Hellow: "world"});
-// })
 
-// INDEX: get: "/"
-app.get("/", async(req,res)=>{
-    try{
-        const allList = await Shoppingcart.find({})
-        res.json(allList)
-    }
-    catch(error){
-        res.status(400).json(error)
-    }
-})
-// Create Route: POST: "/"
-app.post("/", async(req, res)=>{
-    try{
-        const oneList = await Shoppingcart.create(req.body)
-        res.json(oneList)
-    }
-    catch(error){
-        res.status(400).json()
-    }
-})
-// SHOW Route: get: "/:id"
-app.get("/:id", async (req, res)=>{
-    try{
-    const idItem = req.params.id
-    const oneListItem = await Shoppingcart.findById(idItem)
-    res.json(oneListItem)
-    }
-    catch(error){
-        res.status(400).json(error)
-    }
-})
-// Update Route: put: "/: id"
-app.put("/:id", async (req, res)=>{
-    try{idItem = req.params.id
-        const oneListItem = await Shoppingcart.findByIdAndUpdate(idItem, req.body, {new:true})
-        res.json(oneListItem)
-    }
-    catch(error){
-        res.status(400).json(error)
-    }
-})
-    
-
-// Destroy Route: delete: "/:id"
-app.delete("/:id", async (req, res)=>{
-    try{
-        const idItem = req.params.id
-        const oneListItemtoDelete = await Shoppingcart.findByIdAndDelete(idItem)
-        res.json(oneListItemtoDelete)
-    }
-    catch(error){
-        res.status(400).json()
-    }
-
-})
-
+// ALl the Routes:
+app.use("/", shoppingListRoutes)
 
 
 ///////////////////////////////////////////////////////////////////////////SERVER PORT LISTENER
